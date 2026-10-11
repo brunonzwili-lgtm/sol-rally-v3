@@ -146,6 +146,7 @@ async function extract_tar(url, fs_path, use_cache = false) {
   //download tar file from server and decompress
   let decompressed;
   let filename = url.split("/").pop();
+  console.log("extract_tar: start", filename);
   if (!use_cache || !await check_db(url)) {
     let compressed = await download_chunks(url);
     status_text.textContent = `Decompressing ${filename}...`;
@@ -159,6 +160,7 @@ async function extract_tar(url, fs_path, use_cache = false) {
   else {
     decompressed = await read_db_chunks(url);
   }
+  console.log("extract_tar: decompressed, size =", decompressed.length);
 
   //read the tar file and add to emscripten's fs
   status_text.textContent = `Extracting ${filename}...`;
@@ -183,6 +185,7 @@ async function extract_tar(url, fs_path, use_cache = false) {
       status_text.textContent = `Extracting files... (${written} done)`;
   }
   status_text.textContent = `Extracted ${written} files and ${dirs} directories`;
+  console.log("extract_tar: done, files =", written, "dirs =", dirs);
 }
 
 function untar(data) {
@@ -260,7 +263,9 @@ async function load_data() {
 
   let quality = quality_select.value;
   let data_url = `game/data_${quality}.tar.gz`;
+  console.log("load_data: quality =", quality, "url =", data_url);
   await extract_tar(data_url, "/data", true);
+  console.log("load_data: extraction complete");
 }
 
 async function load_idbfs() {
@@ -326,7 +331,14 @@ async function start_game() {
   status_text.textContent = "Launching game...";
 
   await wait_for_frame();
-  run();
+  try {
+    run();
+  } catch (e) {
+    console.error("run() failed:", e);
+    status_text.textContent = `Game launch failed: ${e.message || e}`;
+    start_button.disabled = false;
+    throw e;
+  }
   info_container.style.zIndex = 0;
   info_container.style.display = "none";
   sync_idbfs();
