@@ -6,8 +6,15 @@
 <title>Sol Rally</title>
 <link rel="icon" type="image/png" href="solrally_64.png">
 <script>
-  // Define Module before Emscripten script loads; use canvas ID string
-  var Module = { canvas: "canvas" };
+  // Define Module before Emscripten script loads
+  var Module = {
+    canvas: "canvas",
+    // Don't auto-run main(); we'll start it after the loader UI
+    noInitialRun: true,
+    onRuntimeInitialized: function() {
+      globalThis.ready = true;
+    }
+  };
 </script>
 <script src="game/supertuxkart.js"></script>
     <script>
