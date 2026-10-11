@@ -332,6 +332,9 @@ async function start_game() {
 
   await wait_for_frame();
   try {
+    const canvas = document.getElementById("canvas");
+    console.log("Canvas CSS size:", canvas.clientWidth, "x", canvas.clientHeight);
+    console.log("Canvas drawing buffer:", canvas.width, "x", canvas.height);
     run();
   } catch (e) {
     console.error("run() failed:", e);
