@@ -259,7 +259,7 @@ async function load_data() {
   }
 
   let quality = quality_select.value;
-  let data_url = `/game/data_${quality}.tar.gz`;
+  let data_url = `game/data_${quality}.tar.gz`;
   await extract_tar(data_url, "/data", true);
 }
 
@@ -293,7 +293,7 @@ function set_websocket_url(url) {
 }
 
 async function load_config() {
-  let response = await fetch("/config.json");
+  let response = await fetch("config.json");
   config = await response.json();
   globalThis.config = config;
 }
