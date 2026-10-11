@@ -1,0 +1,8 @@
+<supertuxkart_grand_prix name="To the Moon and Back">
+
+    <track id="volcano_island"     laps="3" reverse="false" />
+    <track id="sandtrack"          laps="2" reverse="false" />
+    <track id="hacienda"           laps="2" reverse="false" />
+    <track id="abyss"              laps="3" reverse="false" />
+
+</supertuxkart_grand_prix>

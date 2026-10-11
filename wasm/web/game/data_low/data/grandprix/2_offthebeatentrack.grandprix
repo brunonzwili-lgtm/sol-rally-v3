@@ -1,0 +1,8 @@
+<supertuxkart_grand_prix name="Off the Beaten Track">
+
+    <track id="abyss"              laps="2" reverse="false" />
+    <track id="hacienda"           laps="3" reverse="false" />
+    <track id="sandtrack"          laps="3" reverse="false" />
+    <track id="scotland"           laps="2" reverse="false" />
+
+</supertuxkart_grand_prix>
