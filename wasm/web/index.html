@@ -9,25 +9,21 @@
   // Define Module before Emscripten script loads
   var Module = {
     canvas: "canvas",
-    // Don't auto-run main(); we'll start it after the loader UI
     noInitialRun: true,
     onRuntimeInitialized: function() {
+      // Override run so we control when main() starts
+      var real_run = Module.run;
+      Module.run = function() {
+        if (globalThis.ready) {
+          real_run();
+        }
+        globalThis.ready = true;
+      };
       globalThis.ready = true;
     }
   };
 </script>
 <script src="game/supertuxkart.js"></script>
-    <script>
-      //emscripten only tells us if the runtime is ready once it starts main
-      //so cancel running main the first time around so we can store when it is ready
-      globalThis.ready = false;
-      var real_run = run;
-      run = () => {
-        if (globalThis.ready) {
-          real_run();
-        }
-        globalThis.ready = true;
-      }
     </script>
     <script src="script.js" type="module" defer></script>
 
