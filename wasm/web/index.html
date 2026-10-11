@@ -5,6 +5,10 @@
 
 <title>Sol Rally</title>
 <link rel="icon" type="image/png" href="solrally_64.png">
+<script>
+  // Define Module before Emscripten script loads; use canvas ID string
+  var Module = { canvas: "canvas" };
+</script>
 <script src="game/supertuxkart.js"></script>
     <script>
       //emscripten only tells us if the runtime is ready once it starts main
@@ -318,14 +322,14 @@
             <div class="feat"><div class="ic">&#127942;</div><div><b>Grand Prix<span class="soon">SOON</span></b><small>SOL prize pools and onchain leaderboards.</small></div></div>
           </div>
           <div id="karts_row">
-            <div class="kart"><img src="game/data_low/data/karts/beastie/godette-icon.png"><small>Validator</small></div>
-            <div class="kart"><img src="game/data_low/data/karts/emule/emule_icon128.png"><small>Bonk</small></div>
-            <div class="kart"><img src="game/data_low/data/karts/kiki/kiki_icon.png"><small>Jupiter</small></div>
-            <div class="kart"><img src="game/data_low/data/karts/tux/tux_icon.png"><small>Sol</small></div>
+            <div class="kart"><img src="images/validator.png"><small>Validator</small></div>
+            <div class="kart"><img src="images/bonk.png"><small>Bonk</small></div>
+            <div class="kart"><img src="images/jupiter.png"><small>Jupiter</small></div>
+            <div class="kart"><img src="images/sol.png"><small>Sol</small></div>
           </div>
         </div>
         <div id="hero_art">
-          <img src="game/data_high/data/tracks/volcano_island/screenshot.jpg">
+          <img src="images/hero.jpg">
         </div>
       </div>
       <div id="controls">
