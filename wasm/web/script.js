@@ -4,7 +4,7 @@ let db = null;
 let db_name = "stk_db";
 let store_name = "stk_store";
 let idbfs_mount = null;
-let data_version = 21;
+let data_version = 27;
 
 let start_button = document.getElementById("start_button");
 let status_text = document.getElementById("status_text");

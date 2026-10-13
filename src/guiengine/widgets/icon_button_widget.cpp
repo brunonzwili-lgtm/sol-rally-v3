@@ -224,6 +224,13 @@ void IconButtonWidget::setLabelFont(irr::gui::ScalableFont* font)
 {
     m_font = font;
 }
+
+// -----------------------------------------------------------------------------
+void IconButtonWidget::setLabelColor(const irr::video::SColor& color)
+{
+    if (m_label == NULL) return;
+    m_label->setOverrideColor(color);
+}   // setLabelColor
 // -----------------------------------------------------------------------------
 EventPropagation IconButtonWidget::focused(const int playerID)
 {

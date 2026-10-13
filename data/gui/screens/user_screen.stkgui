@@ -4,7 +4,8 @@
         <header align="center" height="8%" width="80%" text="Login" text_align="center"/>
         <spacer height="1%" width="10"/>
 
-        <box proportion="1" width="98%" layout="vertical-row">
+        <spacer height="4%" width="10"/>
+        <roundedbox proportion="1" width="66%" align="center" layout="vertical-row">
 
             <spacer height="2%" width="10"/>
 
@@ -61,8 +62,8 @@
 			<spacer width="20" height="1%"/>
 			
 			<spacer width="20" height="5%"/>
-        </box>
-        <spacer width="20" height="15"/>
+        </roundedbox>
+        <spacer width="20" height="14%"/>
     </div>
 
     <icon-button id="back" x="1%" y="0" height="9%" icon="gui/icons/back.png"/>

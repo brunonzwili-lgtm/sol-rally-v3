@@ -124,6 +124,14 @@ namespace GUIEngine
         void setLabelFont(irr::gui::ScalableFont* font);
 
         /**
+          * \brief Sets the color used to draw the label (white on dark theme).
+          *
+          * \pre Must be called after this widget is add()ed to have any effect
+          * \note         Calling this method on a button without label will have no effect
+          */
+        void setLabelColor(const irr::video::SColor& color);
+
+        /**
          * Change the texture used for this icon.
          * \pre At the moment, the new texture must have the same aspct ratio
          *                as the previous one since the object will not

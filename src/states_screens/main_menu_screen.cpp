@@ -144,6 +144,29 @@ void MainMenuScreen::init()
     m_user_id = getWidget<ButtonWidget>("user-id");
     assert(m_user_id);
 
+    // Sol Rally menu styling: white labels for visibility on the dark theme.
+    // The two hero entries also get the large font for emphasis.
+    const video::SColor menu_white(255, 255, 255, 255);
+    const char* hero_buttons[] = {"new", "multiplayer"};
+    for (const char* id : hero_buttons)
+    {
+        if (IconButtonWidget* b = getWidget<IconButtonWidget>(id))
+        {
+            b->setLabelFont(GUIEngine::getLargeFont());
+            b->setLabelColor(menu_white);
+        }
+    }
+    const char* strip_buttons[] = {"options", "achievements", "about", "quit"};
+    for (const char* id : strip_buttons)
+    {
+        if (IconButtonWidget* b = getWidget<IconButtonWidget>(id))
+            b->setLabelColor(menu_white);
+    }
+
+    // Options stays visible but inactive until its screen is reworked.
+    if (IconButtonWidget* opt = getWidget<IconButtonWidget>("options"))
+        opt->setActive(false);
+
     // reset in case we're coming back from a race
     NetworkConfig::get()->cleanNetworkPlayers();
     StateManager::get()->resetActivePlayers();
