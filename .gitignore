@@ -93,3 +93,8 @@ lib/astc-encoder
 lib/shaderc
 
 .DS_Store
+.vercel
+
+# Vercel staging copy of wasm/web - build artifact, not source.
+# Regenerate with: rsync -a wasm/web/ deploy/
+deploy/

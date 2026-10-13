@@ -397,6 +397,7 @@ void BaseUserScreen::eventCallback(Widget* widget,
 }   // eventCallback
 
 // ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 /** Closes the BaseUserScreen, and makes sure that the right screen is displayed
  *  next.
  */

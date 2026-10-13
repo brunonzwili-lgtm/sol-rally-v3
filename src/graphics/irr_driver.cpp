@@ -842,8 +842,8 @@ begin:
     // Only change video driver settings if we are showing graphics
     if (!GUIEngine::isNoGraphics())
     {
-        m_device->setWindowClass("SuperTuxKart");
-        m_device->setWindowCaption(L"SuperTuxKart");
+        m_device->setWindowClass("SolRally");
+        m_device->setWindowCaption(L"Sol Rally");
         m_device->getVideoDriver()
             ->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
         m_device->getVideoDriver()

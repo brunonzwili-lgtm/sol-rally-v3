@@ -77,6 +77,7 @@ private:
     /** Label field for warning and error messages. */
     GUIEngine::LabelWidget * m_info_widget;
 
+
     /** The ribbon with all buttons. */
     GUIEngine::RibbonWidget *m_options_widget;
 

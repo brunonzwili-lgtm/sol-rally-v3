@@ -4,7 +4,7 @@ let db = null;
 let db_name = "stk_db";
 let store_name = "stk_store";
 let idbfs_mount = null;
-let data_version = 17;
+let data_version = 21;
 
 let start_button = document.getElementById("start_button");
 let status_text = document.getElementById("status_text");
@@ -108,7 +108,9 @@ async function download_chunks(url) {
   let base_url = path.join("/");
 
   status_text.textContent = `Downloading manifest for ${filename}...`;
-  let r1 = await fetch(url + ".manifest");
+  // Cache-bust the manifest: a CDN-cached copy from a previous pack would
+  // declare the wrong byte count and fail the download.
+  let r1 = await fetch(url + ".manifest?t=" + Date.now(), { cache: "no-store" });
   let manifest = (await r1.text()).split("\n");
   let size = parseInt(manifest.shift());
   manifest.pop();
@@ -331,6 +333,10 @@ async function start_game() {
   status_text.textContent = "Launching game...";
 
   await wait_for_frame();
+  // Surface async runtime failures on the page: run() succeeding does not
+  // mean the game survived init (abort/exception happens a frame later and
+  // would otherwise leave a bare black canvas with no message).
+  install_runtime_error_hooks();
   try {
     const canvas = document.getElementById("canvas");
     console.log("Canvas CSS size:", canvas.clientWidth, "x", canvas.clientHeight);
@@ -338,7 +344,7 @@ async function start_game() {
     run();
   } catch (e) {
     console.error("run() failed:", e);
-    status_text.textContent = `Game launch failed: ${e.message || e}`;
+    show_fatal(`Game launch failed: ${e.message || e}`);
     start_button.disabled = false;
     throw e;
   }
@@ -349,7 +355,53 @@ async function start_game() {
   console.warn("Warning: Opening devtools may harm the game's performance.");
 }
 
+let runtime_hooks_installed = false;
+function install_runtime_error_hooks() {
+  if (runtime_hooks_installed) return;
+  runtime_hooks_installed = true;
+  const orig_printErr = Module.printErr;
+  Module.printErr = function (text) {
+    if (orig_printErr) orig_printErr(text);
+    else if (console.warn) console.warn(text);
+    record_runtime_log(String(text));
+  };
+  Module.onAbort = function (msg) {
+    console.error("Game aborted:", msg);
+    show_fatal(`Game aborted: ${msg || "see console (Info level) for details"}\n${recent_runtime_log()}`);
+    start_button.disabled = false;
+  };
+  window.addEventListener("error", (e) => {
+    if (!e.filename || e.filename.includes("supertuxkart") || e.filename.includes("script.js")) {
+      console.error("window.onerror:", e.message);
+      record_runtime_log("window.onerror: " + e.message);
+    }
+  });
+}
+
+let runtime_log_lines = [];
+function record_runtime_log(text) {
+  runtime_log_lines.push(text);
+  if (runtime_log_lines.length > 20) runtime_log_lines.shift();
+}
+function recent_runtime_log() {
+  return runtime_log_lines.slice(-10).join("\n");
+}
+function show_fatal(msg) {
+  status_text.textContent = msg;
+  // Re-show the overlay so the message is visible instead of a black canvas.
+  info_container.style.display = "";
+  info_container.style.zIndex = 2;
+  start_button.disabled = false;
+}
+
 Module["canvas"] = document.getElementById("canvas")
+
+// Bust stale caches on the wasm binary.
+// An old cached supertuxkart.wasm paired with the current supertuxkart.js
+// aborts with "No EM_ASM constant found at address ...". Versioning the URL
+// guarantees a matching pair no matter what any CDN or browser cached.
+Module["locateFile"] = (path) =>
+  path.endsWith(".wasm") ? path + "?v=" + data_version : path;
 globalThis.main = main;
 globalThis.sync_idbfs = sync_idbfs;
 globalThis.load_idbfs = load_idbfs;

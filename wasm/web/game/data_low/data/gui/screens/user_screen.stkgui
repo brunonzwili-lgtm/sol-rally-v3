@@ -58,6 +58,8 @@
 								 I18N="In the user screen" text="OK" label_location="bottom"/>
 				</buttonbar>
 			</div>
+			<spacer width="20" height="1%"/>
+			
 			<spacer width="20" height="5%"/>
         </box>
         <spacer width="20" height="15"/>

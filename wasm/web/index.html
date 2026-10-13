@@ -1,30 +1,22 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Sol Rally</title>
-<link rel="icon" type="image/png" href="solrally_64.png">
-<script>
-  // Define Module before Emscripten script loads
-  var Module = {
-    canvas: "canvas",
-    noInitialRun: true,
-    onRuntimeInitialized: function() {
-      // Override run so we control when main() starts
-      var real_run = Module.run;
-      Module.run = function() {
+<link rel="icon" type="image/png" href="/solrally_64.png">
+<script src="/game/stk20.js"></script>
+    <script>
+      //emscripten only tells us if the runtime is ready once it starts main
+      //so cancel running main the first time around so we can store when it is ready
+      globalThis.ready = false;
+      var real_run = run;
+      run = () => {
         if (globalThis.ready) {
           real_run();
         }
         globalThis.ready = true;
-      };
-      globalThis.ready = true;
-    }
-  };
-</script>
-<script src="game/supertuxkart.js"></script>
+      }
     </script>
     <script src="script.js" type="module" defer></script>
 
@@ -49,6 +41,11 @@
       }
       body {
         background-color: var(--black);
+        background-image:
+          linear-gradient(45deg, var(--orange) 25%, transparent 25%, transparent 75%, var(--orange) 75%),
+          linear-gradient(45deg, var(--orange) 25%, transparent 25%, transparent 75%, var(--orange) 75%);
+        background-size: 64px 64px;
+        background-position: 0 0, 32px 32px;
         color: var(--text);
       }
       p, label, select {
@@ -304,7 +301,7 @@
     <div id="info_container">
       <div id="header_bar">
         <div id="brand">
-          <img src="solrally_64.png">
+          <img src="/solrally_64.png">
           <h1>SOL <span>RALLY</span></h1>
         </div>
         <div id="net_pill">SOLANA &#215; MAGICBLOCK</div>
@@ -321,14 +318,14 @@
             <div class="feat"><div class="ic">&#127942;</div><div><b>Grand Prix<span class="soon">SOON</span></b><small>SOL prize pools and onchain leaderboards.</small></div></div>
           </div>
           <div id="karts_row">
-            <div class="kart"><img src="images/validator.png"><small>Validator</small></div>
-            <div class="kart"><img src="images/bonk.png"><small>Bonk</small></div>
-            <div class="kart"><img src="images/jupiter.png"><small>Jupiter</small></div>
-            <div class="kart"><img src="images/sol.png"><small>Sol</small></div>
+            <div class="kart"><img src="/images/karts/validator.png"><small>Validator</small></div>
+            <div class="kart"><img src="/images/karts/bonk.png"><small>Bonk</small></div>
+            <div class="kart"><img src="/images/karts/jupiter.png"><small>Jupiter</small></div>
+            <div class="kart"><img src="/images/karts/sol.png"><small>Sol</small></div>
           </div>
         </div>
         <div id="hero_art">
-          <img src="images/hero.jpg">
+          <img src="/images/tracks/hero.jpg">
         </div>
       </div>
       <div id="controls">
