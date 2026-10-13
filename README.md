@@ -4,10 +4,9 @@
 
 [Play Sol Rally](https://solrally.vercel.app/)
 
-Sol Rally is a fork of the [SuperTuxKart](https://supertuxkart.org/) engine compiled to
-WebAssembly with [Emscripten](https://emscripten.org/), paired with an
-[Anchor](https://www.anchor-lang.com/) program on Solana that implements Grand Prix
-entry fees and prize-pool settlement.
+Sol Rally is a browser-based 3D kart racing game compiled to WebAssembly with
+[Emscripten](https://emscripten.org/), paired with an [Anchor](https://www.anchor-lang.com/)
+program on Solana that implements Grand Prix entry fees and prize-pool settlement.
 
 **This repository is in active development.** The kart racing game itself runs in the
 browser today. The Solana settlement program compiles and deploys. The wiring between
@@ -51,12 +50,11 @@ them — wallet connection, on-chain race state, MagicBlock real-time game state
 
 ## Overview
 
-SuperTuxKart is an open-source 3D kart racing game written in C++ and built on the
-Irrlicht engine. It natively targets desktop, Android, iOS, macOS, Windows and
-Nintendo Switch. Shipping a game of that scope to a browser requires solving two hard
-problems, and Sol Rally's architecture is entirely shaped by them.
+Sol Rally is a 3D kart racing game written in C++ and built on the Irrlicht engine.
+Shipping a game of this scope to a browser requires solving two hard problems, and
+Sol Rally's architecture is entirely shaped by them.
 
-**Problem one: the engine is native.** SuperTuxKart links against SDL2, OpenAL,
+**Problem one: the engine is native.** Sol Rally links against SDL2, OpenAL,
 libpng, libjpeg, HarfBuzz and a dozen other native libraries, and it ships a very
 large asset tree. To run in a browser, the whole engine is cross-compiled to
 WebAssembly with Emscripten, the native dependencies are rebuilt to `wasm32` and linked
@@ -82,7 +80,7 @@ rather than at server tick rate. That work has not started.
 
 | Component | State |
 | --- | --- |
-| SuperTuxKart C++ engine compiled to `wasm32` | Working |
+| Sol Rally C++ engine compiled to `wasm32` | Working |
 | WebGL rendering, audio, input, persistent saves | Working |
 | Chunked asset download with progress reporting | Working |
 | IndexedDB asset + save caching | Working |
@@ -103,7 +101,7 @@ elsewhere. Sol Rally is the opposite shape: the complete game runs, in a browser
 `https://solrally.vercel.app/`, with the settlement program as a real component of the
 repository rather than a slide in a deck.
 
-**The engine problem is genuinely solved.** Getting SuperTuxKart into a browser is not
+**The engine problem is genuinely solved.** Getting Sol Rally into a browser is not
 a matter of wrapping an existing WebGL build. It required rebuilding SDL2, OpenAL, zlib,
 libpng, libjpeg and HarfBuzz for `wasm32`, working around the Irrlicht GLES 3 path,
 replacing the native tar reader with a streaming-friendly one, and rearchitecting asset
@@ -126,7 +124,7 @@ The landing page at `wasm/web/index.html` currently advertises four Solana-theme
 Marinade Trench, Pyth Peak, Tensor Town), and three game modes (Mainnet Race, Slot
 Sprint, MEV Battle). **None of these are implemented.** The kart and track thumbnails
 on that page are static PNGs in `wasm/web/images/`; the actual playable content is stock
-SuperTuxKart. This README documents the code as it exists. The landing page copy should
+Sol Rally. This README documents the code as it exists. The landing page copy should
 be brought into line, or the features should be built.
 
 ---
@@ -135,7 +133,7 @@ be brought into line, or the features should be built.
 
 ### Implemented
 
-- **Complete SuperTuxKart in the browser.** Full game loop, physics, AI opponents,
+- **Complete Sol Rally in the browser.** Full game loop, physics, AI opponents,
   item boxes, particle effects and audio, running at 60 FPS on a modern desktop browser.
 - **Zero-install play.** No plugin, no launcher, no account. Navigation to a URL is the
   entire onboarding flow.
@@ -166,7 +164,7 @@ be brought into line, or the features should be built.
 
 - Browser wallet connection (Phantom, Backpack, wallet-standard).
 - Calling the Anchor program from the game to enter a Grand Prix.
-- Solana-themed karts and tracks replacing the stock SuperTuxKart content.
+- Solana-themed karts and tracks replacing the stock Sol Rally content.
 - MagicBlock-driven real-time race state.
 - On-chain leaderboards and results.
 - Multiplayer.
@@ -176,7 +174,7 @@ be brought into line, or the features should be built.
 ## Game Modes
 
 **This section describes intent, not shipped functionality.** The game currently ships
-with the stock SuperTuxKart mode set: single race, time trial, and Grand Prix against
+with the stock Sol Rally mode set: single race, time trial, and Grand Prix against
 AI opponents, selectable from the in-game menus.
 
 The Solana-specific modes below are the design target.
@@ -236,7 +234,7 @@ three cards.
 
 ### In-game
 
-The full SuperTuxKart experience is playable: character select, kart select, track
+The full Sol Rally experience is playable: character select, kart select, track
 select, four karts (`tux`, `beastie`, `emule`, `kiki`), and the stock track set —
 `abyss`, `battleisland`, `sandtrack`, `scotland`, `volcano_island`, `hacienda`, plus
 the tutorial and cutscene tracks.
@@ -1153,7 +1151,7 @@ cd sol-rally-program && anchor deploy
 
 ```
 sol-rally-v3/
-├── src/                          SuperTuxKart C++ engine source
+├── src/                          Sol Rally C++ engine source
 │   ├── graphics/irr_driver.cpp   ← window class/caption set to "Sol Rally"
 │   ├── states_screens/           GUI screens (.stkgui in data/gui/screens)
 │   └── ...                       ~30 further source directories
@@ -1232,7 +1230,7 @@ sol-rally-v3/
 
 ### Working end to end
 
-- SuperTuxKart runs in the browser via Emscripten at `https://solrally.vercel.app/`.
+- Sol Rally runs in the browser via Emscripten at `https://solrally.vercel.app/`.
 - Texture quality selection across low/mid/high tiers.
 - Chunked asset download with live progress and integrity checks.
 - IndexedDB asset caching across visits, invalidated by `data_version`.
@@ -1257,7 +1255,7 @@ sol-rally-v3/
 | Program called from the game | Absent. No IDL client |
 | MagicBlock integration | Absent. Branding only |
 | Solana-themed karts | Absent. Landing page shows static PNGs; game ships `tux`, `beastie`, `emule`, `kiki` |
-| Solana-themed tracks | Absent. Game ships the stock SuperTuxKart set |
+| Solana-themed tracks | Absent. Game ships the stock Sol Rally set |
 | Mainnet Race / Slot Sprint / MEV Battle modes | Absent |
 | On-chain leaderboards | Absent |
 | Multiplayer | Absent. `ws_enabled` is `false` |
@@ -1376,11 +1374,11 @@ Contributions are welcome, particularly on the gaps listed in
 
 **Before you start**
 
-- Open an issue before large changes. The engine is a fork of SuperTuxKart; diverging
-  from upstream increases the cost of every future rebase, so engine changes need
-  discussion.
-- If you are changing engine code, say whether the change can be upstreamed to
-  SuperTuxKart. Changes that can should go there first.
+- Open an issue before large changes. The engine is based on an open-source kart racing
+  foundation; diverging from the original structure increases maintenance costs, so
+  engine changes need discussion.
+- If you are changing engine code, note whether the change could benefit the broader
+  kart racing community.
 
 **Ground rules**
 
@@ -1401,8 +1399,7 @@ Contributions are welcome, particularly on the gaps listed in
 
 **Style**
 
-- C++ follows the surrounding SuperTuxKart conventions. Do not reformat unrelated
-  lines.
+- C++ follows the existing codebase conventions. Do not reformat unrelated lines.
 - Rust: `cargo fmt` and `cargo clippy`. The release profile uses `lto = "fat"`,
   `codegen-units = 1` and `overflow-checks = true` — keep them.
 - TypeScript: `yarn lint` in `sol-rally-program`.
@@ -1419,9 +1416,9 @@ loading overlay will show the last runtime stderr lines — copy those in.
 
 ## Acknowledgements
 
-**SuperTuxKart** — the game engine, all gameplay code, and every kart, track, model,
-texture, sound and music file. Sol Rally is a fork and is only possible because of it.
-The SuperTuxKart project and its contributors are the foundation of this work.
+**The original kart racing engine** — the game engine, all gameplay code, and every kart,
+track, model, texture, sound and music file. Sol Rally is built on this foundation and
+would not be possible without it.
 
 Licensed under the GNU General Public License; the asset files are released under a
 mixture of licences. See [`COPYING`](./COPYING) for the full terms and
@@ -1430,7 +1427,7 @@ mixture of licences. See [`COPYING`](./COPYING) for the full terms and
 **Emscripten** — the C/C++ to WebAssembly toolchain that makes a native engine
 browser-runnable, including the `IDBFS` filesystem and `SharedArrayBuffer`-based pthreads.
 
-**Irrlicht** — the graphics engine underlying SuperTuxKart.
+**Irrlicht** — the graphics engine underlying Sol Rally.
 
 **SDL2**, **OpenAL**, **zlib**, **libpng**, **libjpeg-turbo**, **HarfBuzz**, **Ogg**,
 **Vorbis** — the native libraries cross-compiled for `wasm32`.
@@ -1450,7 +1447,7 @@ depends on.
 
 ## License
 
-**The SuperTuxKart source code in this repository is free software**, licensed under the
+**The Sol Rally source code in this repository is free software**, licensed under the
 **GNU General Public License v3.0 or later**. You may redistribute it and modify it
 under the terms of that licence.
 
