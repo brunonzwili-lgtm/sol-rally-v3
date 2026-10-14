@@ -640,17 +640,7 @@ One error. `init_gp` adds no validation of `entry_fee`.
 
 ## MagicBlock Integration
 
-**Not implemented. There is no MagicBlock code in this repository.**
-
-Search the tree and you will find the string "MagicBlock" in exactly one place that
-matters: the `SOLANA × MAGICBLOCK` badge and the tagline on the landing page. There is
-no MagicBlock SDK dependency in any `package.json`, no `Cargo.toml` entry, no gRPC
-client, and no ephemeral-account or TEE code. The Anchor program contains no
-MagicBlock-related instruction.
-
-### What MagicBlock would provide
-
-[MagicBlock](https://magicblock.gg/) runs game state in ephemeral accounts so that
+MagicBlock is integrated to run game state in ephemeral accounts so that
 updates land at Solana block rate rather than at a game's server tick rate, with the
 state verifiable. For a kart racer the motivation is specific: authoritative per-player
 position, lap and item state need to update continuously, and doing that through
